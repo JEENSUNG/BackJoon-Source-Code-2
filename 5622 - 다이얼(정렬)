@@ -1,0 +1,35 @@
+import java.util.Scanner;
+public class Main{
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        String str = scan.next();
+        char[] s = new char[str.length()];
+        for(int i = 0; i < str.length(); i++) {
+        	s[i] = str.charAt(i);
+        }
+        int count = 0;
+        int i = 0;
+        while(i < s.length) {
+        	if(s[i] <= 'C' && s[i] >= 'A') {
+        		count += 3;
+        	}else if(s[i] <= 'F' && s[i] >= 'D') {
+        		count += 4;
+        	}else if(s[i] <= 'I' && s[i] >= 'G') {
+        		count += 5;
+        	}else if(s[i] <= 'L' && s[i] >= 'J') {
+        		count += 6;
+        	}else if(s[i] <= 'O' && s[i] >= 'M') {
+        		count += 7;
+        	}else if(s[i] <= 'S' && s[i] >= 'P') {
+        		count += 8;
+        	}else if(s[i] <= 'V' && s[i] >= 'T') {
+        		count += 9;
+        	}else if(s[i] <= 'Z' && s[i] >= 'W') {
+        		count += 10;
+        	}else
+        		count += 2;
+        	i++;
+        }
+        System.out.println(count);
+    }
+}
