@@ -1,0 +1,28 @@
+import java.util.LinkedList;
+import java.util.Scanner;
+public class Main{
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        int n = scan.nextInt();
+        int m = scan.nextInt();
+        int count = 0;
+        LinkedList<Integer> list = new LinkedList<>();
+        for(int i = 1; i <= n; i++)
+            list.add(i);
+        while(m-- > 0){
+            int num = scan.nextInt();
+            while(true){
+                if(list.getFirst() == num){
+                    list.pollFirst();
+                    break;
+                }
+                if(list.indexOf(num) <= list.size() / 2)
+                    list.addLast(list.pollFirst());
+                else
+                    list.addFirst(list.pollLast());
+                count++;
+            }
+        }
+        System.out.println(count);
+    }
+}
