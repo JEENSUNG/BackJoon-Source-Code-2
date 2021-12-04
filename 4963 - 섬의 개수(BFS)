@@ -1,0 +1,57 @@
+import java.awt.Point;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+public class Main{
+	static int[][] arr;
+	static int dx[] = {0,1,0,-1,-1,-1,1,1};
+	static int dy[] = {1,0,-1,0,-1,1,1,-1};
+	static int n,m;
+	static boolean[][] visit;
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		while(true) {
+			n = scan.nextInt();
+			m = scan.nextInt();
+			if(n == 0 && m == 0) {
+				break;
+			}
+			arr = new int[m][n];
+			visit = new boolean[m][n];
+			for(int i = 0; i < m; i++) {
+				for(int j = 0; j < n; j++) {
+					int p = scan.nextInt();
+					arr[i][j] = p;
+				}
+			}
+			int count = 0;
+			for(int i = 0; i < m; i++) {
+				for(int j = 0; j < n; j++) {
+					if(!visit[i][j] && arr[i][j] == 1) {
+						bfs(i,j);
+						count++;
+					}
+				}
+			}
+			System.out.println(count);
+		}
+	}
+	public static void bfs(int a, int b) {
+		Queue<Point> queue = new LinkedList<>();
+		queue.offer(new Point(a,b));
+		visit[a][b] = true;
+		while(!queue.isEmpty()) {
+			Point now = queue.poll();
+			for(int i = 0; i < 8; i++) {
+				int nx = now.x + dx[i];
+				int ny = now.y + dy[i];
+				if(nx >= 0 && ny >= 0 && nx < m && ny < n) {
+					if(arr[nx][ny] == 1 && visit[nx][ny] == false){
+						queue.offer(new Point(nx,ny));
+						visit[nx][ny] = true;
+					}
+				}
+			}
+		}
+	}
+}
