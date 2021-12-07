@@ -1,0 +1,54 @@
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Scanner;
+public class Main{
+	static int min = Integer.MAX_VALUE;
+	static int[][] arr;
+	static int n, m;
+	static boolean[] visit;
+    static ArrayList<Point> HouseList = new ArrayList<>();
+    static ArrayList<Point> ChickenList = new ArrayList<>();
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        arr = new int[n][n];
+        for(int i = 0; i < n; i++) {
+        	for(int j = 0; j < n; j++) {
+        		arr[i][j] = scan.nextInt();
+        		if(arr[i][j] == 1)
+        			HouseList.add(new Point(i,j));
+        		else if(arr[i][j] == 2)
+        			ChickenList.add(new Point(i,j));
+        	}
+        }
+        visit = new boolean[ChickenList.size()];
+        backtracking(0, 0);
+        System.out.println(min);
+    }
+    public static void backtracking(int x, int y) {
+    	if(x == m) {
+    		int sum = 0;
+    		for(int i = 0; i < HouseList.size(); i++) {
+    			int count = Integer.MAX_VALUE;
+    			for(int j = 0; j < ChickenList.size(); j++) {
+    				if(visit[j] == true) {
+    					int dist = Math.abs(HouseList.get(i).x - ChickenList.get(j).x)
+    							+ Math.abs(HouseList.get(i).y - ChickenList.get(j).y);
+    					count = Math.min(count, dist);
+    				}
+    			}
+    			sum += count;
+    		}
+    		min = Math.min(min, sum);
+    		return;
+    	}
+    	for(int i = y; i < ChickenList.size(); i++) {
+    		if(visit[i] == false) {
+    			visit[i] = true;
+    			backtracking(x+1, i+1);
+    			visit[i] = false;
+    		}
+    	}
+    }
+}
