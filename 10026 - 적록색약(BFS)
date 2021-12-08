@@ -1,0 +1,80 @@
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+public class Main{
+	static int n;
+	static char[][] normal;
+	static char[][] unnormal;
+	static int dx[] = {1,0,-1,0};
+	static int dy[] = {0,1,0,-1};
+	static boolean[][] normal_visit;
+	static boolean[][] unnormal_visit;
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		n = Integer.parseInt(br.readLine());
+		normal = new char[n][n];
+		unnormal = new char[n][n]; 
+		normal_visit = new boolean[n][n];
+		unnormal_visit = new boolean[n][n];
+		for(int i = 0; i < n; i++) {
+			String str = br.readLine();
+			for(int j = 0; j < n; j++) {
+				normal[i][j] = str.charAt(j);
+				unnormal[i][j] = str.charAt(j);
+				if(unnormal[i][j] == 'G')
+					unnormal[i][j] = 'R';
+			}
+		}
+		int count = 0;
+		int count2 = 0;
+		for(int i = 0; i < n; i++) {
+			for(int j = 0; j < n; j++) {
+				if(normal_visit[i][j] == false) {
+					dfs(i,j,normal[i][j]);
+					count++;
+				}
+				if(unnormal_visit[i][j] == false) {
+					dfs2(i,j,unnormal[i][j]);
+					count2++;
+				}
+			}
+		}
+		System.out.println(count + " " + count2);
+	}
+	public static void dfs(int x, int y, char g) {
+		LinkedList<Point> queue = new LinkedList<Point>();
+		normal_visit[x][y] = true;
+		queue.offer(new Point(x,y));
+		while(!queue.isEmpty()) {
+			Point now = queue.poll();
+			for(int i = 0; i < 4; i++) {
+				int nx = now.x + dx[i];
+				int ny = now.y + dy[i];
+				if(nx >= 0 && nx < n && ny >= 0 && ny < n) {
+					if(normal_visit[nx][ny] == false && normal[nx][ny] == g) {
+						dfs(nx,ny, normal[nx][ny]);
+					}
+				}
+			}
+		}
+	}
+	public static void dfs2(int x, int y, char g) {
+		LinkedList<Point> queue = new LinkedList<Point>();
+		unnormal_visit[x][y] = true;
+		queue.offer(new Point(x,y));
+		while(!queue.isEmpty()) {
+			Point now = queue.poll();
+			for(int i = 0; i < 4; i++) {
+				int nx = now.x + dx[i];
+				int ny = now.y + dy[i];
+				if(nx >= 0 && nx < n && ny >= 0 && ny < n) {
+					if(unnormal_visit[nx][ny] == false && unnormal[nx][ny] == g) {
+						dfs2(nx,ny, unnormal[nx][ny]);
+					}
+				}
+			}
+		}
+	}
+}
