@@ -1,0 +1,44 @@
+import java.awt.*;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+    static int node;
+    static int n,m,k;
+    static int[][] arr;
+    static boolean[]visit;
+    static int[] dx = {0,1,0,-1};
+    static int[] dy = {1,0,-1,0};
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        node = scan.nextInt();
+        n = scan.nextInt();
+        m = scan.nextInt();
+        k = scan.nextInt();
+        arr = new int[node+1][node+1];
+        for(int i = 1; i <= k; i++){
+            int a = scan.nextInt();
+            int b = scan.nextInt();
+            arr[a][b] = arr[b][a] = 1;
+        }
+        visit = new boolean[k+1];
+        dfs(n,m,0);
+    }
+    public static void dfs(int x, int y, int cnt) {
+        visit[x] = true;
+        LinkedList<Point> queue = new LinkedList<>();
+        queue.offer(new Point(x,y));
+        while(!queue.isEmpty()){
+            Point now = queue.poll();
+            if(now.x == m){
+                System.out.println(cnt);
+                System.exit(0);
+            }
+            for(int i = 1; i <= node; i++){
+                if(arr[now.x][i] == 1 && visit[now.x] == false){
+                    dfs(i,now.x,cnt+1);
+                }
+            }
+        }
+    }
+}
