@@ -21,8 +21,9 @@ public class Main {
             int b = scan.nextInt();
             arr[a][b] = arr[b][a] = 1;
         }
-        visit = new boolean[k+1];
+        visit = new boolean[node+1];
         dfs(n,m,0);
+        System.out.println(-1);
     }
     public static void dfs(int x, int y, int cnt) {
         visit[x] = true;
@@ -35,7 +36,7 @@ public class Main {
                 System.exit(0);
             }
             for(int i = 1; i <= node; i++){
-                if(arr[now.x][i] == 1 && visit[now.x] == false){
+                if(arr[now.x][i] == 1 && visit[i] == false){
                     dfs(i,now.x,cnt+1);
                 }
             }
