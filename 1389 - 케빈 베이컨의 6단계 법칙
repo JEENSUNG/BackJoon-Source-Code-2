@@ -1,76 +1,67 @@
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
- 
-class pair {
-    int now;
-    int weight;
-    public pair(int now, int weight) {
-        super();
-        this.now = now;
-        this.weight = weight;
-    }
-}
- 
+
+import java.util.*;
+
 public class Main {
-    static int n,m;
-    static boolean[][] map;
- 
-    static int[] rst;
-    static Scanner sc = new Scanner(System.in);
- 
-    static int bfs(int start) {
-        boolean[] visited = new boolean[n+1];
-        Queue<pair> q = new LinkedList<pair>();
-        visited[start]=true;
-        q.add(new pair(start,0));
-        int score=0;
-        
-        while(!q.isEmpty()) {
-            int now = q.peek().now;
-            int weight = q.peek().weight;
-            score+=weight;
-            q.poll();
-            
-            for(int i=1;i<=n;i++) {
-                if(map[now][i] && !visited[i]) {
-                    visited[i]=true;
-                    q.add(new pair(i,weight+1));
+    static int node;
+    static int n, answer;
+    static int arr[][];
+    static boolean[] visit;
+    static int[] ans;
+    static int[] pp;
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        node = scan.nextInt();
+        n = scan.nextInt();
+        arr = new int[node + 1][node + 1];
+        pp = new int[node + 1];
+        for (int i = 1; i <= n; i++) {
+            int a = scan.nextInt();
+            int b = scan.nextInt();
+            arr[a][b] = arr[b][a] = 1;
+        }
+        int po = 0;
+        int min = Integer.MAX_VALUE;
+        for (int i = 1; i <= node; i++) {
+            int sum = 0;
+            for (int j = 1; j <= node; j++) {
+                if (i != j) {
+                    visit = new boolean[node + 1];
+                    ans = new int[node + 1];
+                    sum += bfs(i, j, 0);
+                }
+            }
+            if(sum < min){
+                po = i;
+                min = Math.min(min, sum);
+            }
+        }
+        System.out.println(po);
+    }
+    public static int bfs(int x, int y, int cnt) {
+        Queue<Integer> queue =  new LinkedList<>();
+        ArrayList<Integer> list = new ArrayList<>();
+        queue.offer(x);
+        visit[x] = true;
+        while (!queue.isEmpty()) {
+            int now = queue.poll();
+            for(int i = 1; i <= node; i++){
+                if(arr[now][i] == 1 && visit[i] == false)
+                    list.add(i);
+            }
+            Iterator<Integer> iter = list.iterator();
+            while(iter.hasNext()){
+                int next = iter.next();
+                if(!visit[next]){
+                    ans[next] = ans[now]+ 1;
+                    if(next == y){
+                        return ans[next];
+                    }
+                    visit[next] = true;
+                    queue.offer(next);
                 }
             }
         }
-        
-        return score;
+        return 0;
     }
-    
-    public static void main(String[] args) {
-        n = sc.nextInt(); // 유저의 수
-        m = sc.nextInt(); // 관계 수
-        
-        map = new boolean[n+1][n+1];
-        rst = new int[n+1];
-        
-        for(int i=0;i<m;i++) {
-            int a=sc.nextInt();
-            int b=sc.nextInt();
-            
-            map[a][b] = true;
-            map[b][a] = true;
-        }
-        
-        int min=Integer.MAX_VALUE;
-        int ans = 0;
-        for(int i=1;i<=n;i++) {
-            
-            rst[i] = bfs(i);
-            
-            if(rst[i]<min) {
-                min = rst[i];
-                ans = i;
-            }
-        }
-        
-        System.out.println(ans);
-        
-    }//end of main
 }
