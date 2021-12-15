@@ -1,0 +1,46 @@
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+public class Main {
+    static int n,m;
+    static char[][] arr;
+    static int[] dx = {-1,0,1,0};
+    static int[] dy = {0,1,0,-1};
+    static int ans = 0;
+    static HashSet<Character> hash = new HashSet<>();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        arr = new char[n][m];
+        for(int i = 0; i < n; i++){
+            String str = br.readLine();
+            for(int j = 0; j < m; j++){
+                arr[i][j] = str.charAt(j);
+            }
+        }
+        hash.add(arr[0][0]);
+        dfs(0,0,1);
+        System.out.print(ans);
+    }
+    public static void dfs(int x, int y, int count){
+        for(int i = 0; i < 4; i++){
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if(nx < 0 || ny < 0 || nx >= n || ny >= m){
+                continue;
+            }
+            if(hash.contains(arr[nx][ny])){
+                ans = Math.max(ans,count);
+            }
+            else{
+                hash.add(arr[nx][ny]);
+                dfs(nx,ny,count+1);
+                hash.remove(arr[nx][ny]);
+            }
+        }
+    }
+}
