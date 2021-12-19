@@ -1,0 +1,19 @@
+import java.awt.*;
+import java.util.*;
+public class Main {
+    static int n,m;
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        int arr[] = new int[n+1];
+        for(int i = 1; i <= n; i++){
+            arr[i] = arr[i-1] + scan.nextInt();
+        }
+        while(m--> 0){
+            int x = scan.nextInt();
+            int y = scan.nextInt();
+            System.out.println(arr[y] - arr[x-1]);
+        }
+    }
+}
