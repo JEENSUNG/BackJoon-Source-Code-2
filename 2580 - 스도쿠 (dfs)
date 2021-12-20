@@ -1,12 +1,9 @@
-import java.awt.*;
+
 import java.util.*;
 public class Main {
-    static int n;
     static int arr[][];
-    static int count = 0;
     public static void main(String[] args){
         Scanner scan = new Scanner(System.in);
-        n = scan.nextInt();
         arr = new int[9][9];
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
