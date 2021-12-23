@@ -1,0 +1,70 @@
+
+import java.io.*;
+import java.util.*;
+public class Main {
+    static int n, m,k;
+    static long[] arr;
+    static int count;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+        for(count = 1; count <= n; count *= 2){
+            arr = new long[count * 2 + 2];
+        }
+        for(int i = 1; i <= n; i++){
+            arr[count + i - 1] = Long.parseLong(br.readLine());
+        }
+        for(int i = count-1; i >= 1; i--){
+            arr[i] = arr[i*2] + arr[i*2+1];
+        }
+
+        int size = m + k;
+        for(int i = 1; i <= size; i++){
+            int type, x;
+            long y;
+            st = new StringTokenizer(br.readLine());
+            type = Integer.parseInt(st.nextToken());
+            x = Integer.parseInt(st.nextToken());
+            y = Long.parseLong(st.nextToken());
+            if(type == 1){
+                edit(x, (int) y);
+            }
+            else{
+                int endId;
+                endId = (int)y;
+                bw.write(String.valueOf(sum(x,endId))+"\n");
+            }
+        }
+        bw.flush();
+        bw.close();
+        br.close();
+    }
+    public static void edit(int id, int value){
+        int x = id + count - 1;
+        arr[x] = value;
+        x = x / 2;
+        while(x>0){
+            arr[x] = arr[x*2] + arr[x * 2 +1];
+            x = x / 2;
+        }
+        return;
+    }
+    public static long sum(int start, int end){
+        int a = start + count - 1;
+        int b = end + count - 1;
+        long ret = 0;
+        while(a <= b){
+            if((a & 1) == 1)
+                ret += arr[a++];
+            if((b & 1) == 0)
+                ret += arr[b--];
+            a = a / 2;
+            b = b / 2;
+        }
+        return ret;
+    }
+}
