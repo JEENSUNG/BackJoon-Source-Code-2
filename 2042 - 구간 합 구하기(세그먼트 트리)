@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.util.*;
 public class Main {
@@ -12,9 +11,9 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
-        for(count = 1; count <= n; count *= 2){
-            arr = new long[count * 2 + 2];
-        }
+        for(count = 1; count < n; count *= 2);
+        arr = new long[count * 2 + 2];
+
         for(int i = 1; i <= n; i++){
             arr[count + i - 1] = Long.parseLong(br.readLine());
         }
@@ -31,7 +30,7 @@ public class Main {
             x = Integer.parseInt(st.nextToken());
             y = Long.parseLong(st.nextToken());
             if(type == 1){
-                edit(x, (int) y);
+                edit(x, y);
             }
             else{
                 int endId;
@@ -43,7 +42,7 @@ public class Main {
         bw.close();
         br.close();
     }
-    public static void edit(int id, int value){
+    public static void edit(int id, long value){
         int x = id + count - 1;
         arr[x] = value;
         x = x / 2;
