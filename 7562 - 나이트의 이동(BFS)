@@ -5,8 +5,8 @@ import java.util.Queue;
 import java.util.Scanner;
 
 public class Main{
-	public static int[] dx = {1,2,2,1,-1,-2,-2,-1};
-	public static int[] dy = {2,1,-1,-2,-2,-1,1,2};
+	public static int[] dx = {1,2,2,1,-1,-2,-1,-2};
+	public static int[] dy = {2,1,-1,-2,-2,-1,2,1};
 	public static int n, i, start_x,start_y,end_x, end_y,count;
 	public static int arr[][];
 	public static boolean visit[][];
