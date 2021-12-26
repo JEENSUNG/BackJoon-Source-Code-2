@@ -1,36 +1,49 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
-public class Main {
-    static int n, m, k;
-    static int[] arr;
-    static int count;
-    public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-        n = Integer.parseInt(br.readLine());
-        while(n--> 0){
-            String str = br.readLine();
-            char[] s = new char[str.length()];
-            int R = 0;
-            int D = 0;
-            for(int i = 0; i < str.length(); i++){
-                s[i] = str.charAt(i);
-                if(s[i] == 'R')
-                    R++;
-                else if(s[i] == 'D')
-                    D++;
+public class Main{
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        int n = scan.nextInt();
+        while (n-- > 0) {
+            String str = scan.next();
+            int num = scan.nextInt();
+
+            String x = scan.next();
+            String x_sub[] = x.substring(1, x.length() - 1).split(",");
+            Deque<Integer> queue = new LinkedList<>();
+            for(int i = 0; i < x_sub.length; i++) {
+                if(!x_sub[i].equals(""))
+                    queue.offer(Integer.valueOf(x_sub[i]));
             }
-            int num = Integer.parseInt(br.readLine());
-            arr = new int[num+2];
-            int[] ans = new int[num];
-            for(int i = 0; i < num+2; i++){
-                arr[i] = Integer.parseInt(br.readLine());
-                if(i >= 1 && i <= num)
-                    ans[i-1] = arr[i];
+            System.out.println(ac(queue, str));
+        }
+    }
+    public static String ac(Deque<Integer> queue, String str){
+        boolean reverse = false;
+        for (char s : str.toCharArray()) {
+            if (s == 'R') {
+                reverse = !reverse;
+            }
+            else{
+                if(queue.size() == 0){
+                    return "error";
+                }
+                if (reverse) {
+                    queue.removeLast();
+                }
+                else
+                    queue.removeFirst();
             }
         }
+        StringBuilder sb = new StringBuilder("[");
+        while(!queue.isEmpty()){
+            if(reverse)
+                sb.append(queue.removeLast());
+            else
+                sb.append(queue.removeFirst());
+            if(queue.size() != 0)
+                sb.append(',');
+        }
+        sb.append(']');
+        return sb.toString();
     }
 }
