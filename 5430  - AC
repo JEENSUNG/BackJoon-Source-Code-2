@@ -1,0 +1,36 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+public class Main {
+    static int n, m, k;
+    static int[] arr;
+    static int count;
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        n = Integer.parseInt(br.readLine());
+        while(n--> 0){
+            String str = br.readLine();
+            char[] s = new char[str.length()];
+            int R = 0;
+            int D = 0;
+            for(int i = 0; i < str.length(); i++){
+                s[i] = str.charAt(i);
+                if(s[i] == 'R')
+                    R++;
+                else if(s[i] == 'D')
+                    D++;
+            }
+            int num = Integer.parseInt(br.readLine());
+            arr = new int[num+2];
+            int[] ans = new int[num];
+            for(int i = 0; i < num+2; i++){
+                arr[i] = Integer.parseInt(br.readLine());
+                if(i >= 1 && i <= num)
+                    ans[i-1] = arr[i];
+            }
+        }
+    }
+}
