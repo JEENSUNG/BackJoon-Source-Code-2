@@ -1,0 +1,40 @@
+import java.util.*;
+public class Main{
+    static int sum = 0;
+    static int n,m;
+    static int[] arr,value;
+    static boolean[] visit;
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        arr = new int[n];
+        value = new int[n];
+        visit = new boolean[n];
+        for(int i = 0; i < n; i++){
+            arr[i] = scan.nextInt();
+            value[i] = scan.nextInt();
+        }
+        for(int i = 1; i <= n; i++){
+            dp(0,i, 0,0);
+        }
+        System.out.println(sum);
+    }
+    public static void dp(int count,int x, int y, int t){
+        if(count == x){
+            if(y > m)
+                return;
+            else
+                sum = Math.max(t,sum);
+            return;
+        }
+
+        for(int i = 0; i < n; i++){
+            if(!visit[i]){
+                visit[i] = true;
+                dp(count+1, x, y+arr[i], t + value[i]);
+                visit[i] = false;
+            }
+        }
+    }
+}
