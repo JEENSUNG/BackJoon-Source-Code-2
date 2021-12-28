@@ -7,8 +7,8 @@ public class Main{
 	static int n;
 	static char[][] normal;
 	static char[][] unnormal;
-	static int dx[] = {1,0,-1,0};
-	static int dy[] = {0,1,0,-1};
+	static int dx[] = {1,0,0,-1};
+	static int dy[] = {0,1,-1,0};
 	static boolean[][] normal_visit;
 	static boolean[][] unnormal_visit;
 	public static void main(String[] args) throws IOException{
