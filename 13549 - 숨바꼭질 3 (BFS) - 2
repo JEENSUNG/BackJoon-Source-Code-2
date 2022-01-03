@@ -6,6 +6,7 @@ public class Main{
         Scanner scan = new Scanner(System.in);
         n = scan.nextInt();
         m = scan.nextInt();
+        Arrays.fill(arr, -1);
         if(n == m){
             System.out.println(0);
         }else
@@ -13,35 +14,26 @@ public class Main{
     }
     public static void bfs(int n){
         Queue<Integer> queue = new LinkedList<>();
-        arr[n] = 1;
+        arr[n] = 0;
         queue.offer(n);
         while (!queue.isEmpty()) {
             int now = queue.poll();
-            for(int i = 0; i < 2; i++){
-                int next = now;
-                while(next <= m){
-                    if(next == m){
-                        System.out.println(arr[next]);
-                        return;
-                    }
-                    arr[next] = arr[now];
-                    next = next * 2;
-                }
-                int temp;
-                if(i == 0)
-                    temp = now + 1;
-                else
-                    temp = now - 1;
-                if(temp == m) {
-                    System.out.println(arr[temp]);
-                    return;
-                }
-                if (temp >= 0 && temp < arr.length && arr[temp] == 0) {
-                    queue.offer(temp);
-                    arr[temp] = arr[temp] + 1;
-                }
+            if(now == m){
+                System.out.println(arr[now]);
+                return;
             }
-
+            if (now - 1 >= 0 && arr[now - 1] == -1) {
+                queue.offer(n - 1);
+                arr[now - 1] = arr[now] + 1;
+            }
+            if(now * 2 <= arr.length && arr[now * 2] == -1){
+                queue.offer(now * 2);
+                arr[now * 2] = arr[now];
+            }
+            if(now + 1 <= arr.length && arr[now + 1] == -1){
+                queue.offer(now + 1);
+                arr[now + 1] = arr[now] + 1;
+            }
         }
     }
 }
