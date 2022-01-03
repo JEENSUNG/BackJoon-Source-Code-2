@@ -1,0 +1,47 @@
+import java.util.*;
+public class Main{
+    static int n,m;
+    static int arr[] = new int[100001];
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        if(n == m){
+            System.out.println(0);
+        }else
+            bfs(n);
+    }
+    public static void bfs(int n){
+        Queue<Integer> queue = new LinkedList<>();
+        arr[n] = 1;
+        queue.offer(n);
+        while (!queue.isEmpty()) {
+            int now = queue.poll();
+            for(int i = 0; i < 2; i++){
+                int next = now;
+                while(next <= m){
+                    if(next == m){
+                        System.out.println(arr[next]);
+                        return;
+                    }
+                    arr[next] = arr[now];
+                    next = next * 2;
+                }
+                int temp;
+                if(i == 0)
+                    temp = now + 1;
+                else
+                    temp = now - 1;
+                if(temp == m) {
+                    System.out.println(arr[temp]);
+                    return;
+                }
+                if (temp >= 0 && temp < arr.length && arr[temp] == 0) {
+                    queue.offer(temp);
+                    arr[temp] = arr[temp] + 1;
+                }
+            }
+
+        }
+    }
+}
