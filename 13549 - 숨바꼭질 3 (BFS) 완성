@@ -23,14 +23,14 @@ public class Main{
                 return;
             }
             if (now - 1 >= 0 && arr[now - 1] == -1) {
-                queue.offer(n - 1);
+                queue.offer(now - 1);
                 arr[now - 1] = arr[now] + 1;
             }
-            if(now * 2 <= arr.length && arr[now * 2] == -1){
+            if(now * 2 < arr.length && arr[now * 2] == -1){
                 queue.offer(now * 2);
                 arr[now * 2] = arr[now];
             }
-            if(now + 1 <= arr.length && arr[now + 1] == -1){
+            if(now + 1 < arr.length && arr[now + 1] == -1){
                 queue.offer(now + 1);
                 arr[now + 1] = arr[now] + 1;
             }
