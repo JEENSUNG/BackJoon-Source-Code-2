@@ -1,0 +1,59 @@
+import java.io.*;
+import java.util.*;
+public class Main {
+    static int n,m;
+    static int visited[];
+    static int dx[] = {-1,1};
+    static Stack<Integer>stack = new Stack<>();
+    static Queue<Node>q = new LinkedList<>();
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        ArrayList<String>list = new ArrayList<>();
+    
+        String[] t = br.readLine().split(" ");
+        n = Integer.parseInt(t[0]);
+        m = Integer.parseInt(t[1]);
+        visited = new int[1000001];
+        Arrays.fill(visited, -1);
+        visited[n]=n;
+        q.add(new Node(n,0));
+        bfs();
+    }
+    public static void bfs() {
+        while(!q.isEmpty()) {
+            Node a = q.poll();
+            if(a.pos==m) {
+                System.out.println(a.cnt);
+                stack.add(m);
+                while(m!=n) {
+                    stack.add(visited[m]);
+                    m = visited[m];
+                }
+                while(!stack.isEmpty()) {
+                    System.out.print(stack.pop()+" ");
+                }
+                break;
+            }
+            for(int i=0; i<3; i++) {
+                int nx=0;
+                if(i!=2) {
+                    nx=a.pos+dx[i];
+                }
+                else if(i==2) {
+                    nx = a.pos*2;
+                }
+                if(nx>=0 && nx<=100000 && visited[nx]==-1) {
+                    q.add(new Node(nx,a.cnt+1));
+                    visited[nx]=a.pos;
+                }
+            }
+        }
+    }
+}
+class Node{
+    int pos,cnt;
+    Node(int pos, int cnt) {
+        this.pos=pos;
+        this.cnt=cnt;
+    }
+}
