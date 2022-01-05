@@ -1,0 +1,59 @@
+import java.util.*;
+
+import static java.lang.Integer.MAX_VALUE;
+
+public class Main{
+    static int n,m;
+    static int arr[] = new int[100001];
+    static int ans[] = new int[100001];
+    static int time = 0;
+    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        Arrays.fill(arr, -1);
+        if(n == m){
+            System.out.println(0);
+        }else {
+            time = bfs(n);
+            System.out.println(time);
+            Stack<Integer> stack = new Stack<>();
+            while(m != n){
+                stack.push(m);
+                m = ans[m];
+            }
+            stack.push(m);
+            while (!stack.isEmpty()) {
+                System.out.print(stack.pop() + " ");
+            }
+        }
+    }
+    public static int bfs(int n){
+        Queue<Integer> queue = new LinkedList<>();
+        arr[n] = 0;
+        queue.offer(n);
+        while (!queue.isEmpty()) {
+            int now = queue.poll();
+            if(now == m) {
+                return arr[now];
+            }
+            if (now - 1 >= 0 && arr[now - 1] == -1) {
+                arr[now - 1] = arr[now] + 1;
+                queue.offer(now - 1);
+                ans[now - 1] = now;
+            }
+            if (now * 2 < arr.length && arr[now * 2] == -1){
+                arr[now * 2] = arr[now] + 1;
+                queue.offer(now * 2);
+                ans[now * 2] = now;
+            }
+            if (now + 1 < arr.length && arr[now + 1] == -1) {
+                arr[now + 1] = arr[now] + 1;
+                queue.offer(now + 1);
+                ans[now + 1] = now;
+            }
+        }
+        return 0;
+    }
+}
