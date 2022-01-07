@@ -76,7 +76,7 @@ public class Main{
                     continue;
                 }
                 visit[nx][ny] = true;
-                if(arr[nx][ny] != arr[x][y])
+                if(arr[nx][ny] == arr[x][y])
                     continue;
                 if(arr[nx][ny] == 0) {
                     queue.offer(new Points(nx, ny, now.cnt + 1));
