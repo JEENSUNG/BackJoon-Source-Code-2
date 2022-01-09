@@ -3,32 +3,32 @@ import java.util.*;
 public class Main{
     static int n,m;
     static int[] arr;
-    static boolean[] visit;
+    static boolean[][] visit;
     static int time = 0;
     static int x;
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         n = scan.nextInt();
-        arr = new int[1001];
-        visit = new boolean[1001];
+        arr = new int[2001];
+        visit = new boolean[2001][2001];
         System.out.println(dfs(1));
     }
     public static int dfs(int x){
         Queue<Points> queue = new LinkedList<>();
         queue.offer(new Points(x,0, 0));
-        visit[x] = true;
+        visit[x][1] = true;
         while (!queue.isEmpty()) {
             Points now = queue.poll();
             if(n == now.x){
                 return now.cnt;
             }
-            if(now.x + now.state < 1001 && now.state != 0 && !visit[now.x + now.state]){
+            if(now.x + now.state < 2001 && now.state != 0 && !visit[now.x + now.state][now.state]){
                 queue.offer(new Points(now.x + now.state, now.cnt + 1, now.state));
-                visit[now.x + now.state] = true;
+                visit[now.x + now.state][now.state] = true;
             }
-            if(now.x - 1 >= 0 && !visit[now.x-1]){
+            if(now.x - 1 >= 0 && !visit[now.x-1][now.state]){
                 queue.offer(new Points(now.x - 1, now.cnt+1, now.state));
-                visit[now.x-1] = true;
+                visit[now.x-1][now.state] = true;
             }
             if(true){
                 queue.offer(new Points(now.x, now.cnt + 1, now.x));
