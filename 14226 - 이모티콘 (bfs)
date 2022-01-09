@@ -22,13 +22,15 @@ public class Main{
             if(n == now.x){
                 return now.cnt;
             }
-            if(now.x - 1 >= 0){
-                queue.offer(new Points(now.x - 1, now.cnt+1, now.state));
-            }
-            if(now.x + now.state < 1001){
+            if(now.x + now.state < 1001 && now.state != 0 && !visit[now.x + now.state]){
                 queue.offer(new Points(now.x + now.state, now.cnt + 1, now.state));
+                visit[now.x + now.state] = true;
             }
-            else{
+            if(now.x - 1 >= 0 && !visit[now.x-1]){
+                queue.offer(new Points(now.x - 1, now.cnt+1, now.state));
+                visit[now.x-1] = true;
+            }
+            if(true){
                 queue.offer(new Points(now.x, now.cnt + 1, now.x));
             }
         }
