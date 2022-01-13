@@ -1,0 +1,140 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+ 
+class Dummy {
+    int x;
+    int y;
+ 
+    Dummy(int x, int y) {
+        this.x = x;
+        this.y = y;
+ 
+    }
+}
+ 
+class Infor {
+    int time;
+    int dir;
+ 
+    Infor(int time, int dir) {
+        this.time = time;
+        this.dir = dir;
+    }
+}
+ 
+class Main {
+ 
+    static int N;
+    static int K;
+    static int L;
+    static int arr[][];
+    static int time;
+    static Queue<Infor> q;
+    static int[] dx = { -1, 0, 1, 0 }; 
+    static int[] dy = { 0, 1, 0, -1 };
+ 
+    public static void main(String[] args) throws Exception {
+ 
+        Scanner sc = new Scanner(System.in);
+        q = new LinkedList<>();
+ 
+        N = sc.nextInt();
+        arr = new int[N + 1][N + 1];
+ 
+        K = sc.nextInt();
+        for (int i = 0; i < K; i++) {
+            int tempX = sc.nextInt();
+            int tempY = sc.nextInt();
+ 
+            arr[tempX][tempY] = 1;
+        }
+ 
+        L = sc.nextInt();
+ 
+        for (int i = 0; i < L; i++) {
+            int tempT = sc.nextInt();
+            int tempD = sc.next().charAt(0);
+            if (tempD == 'D') {
+                q.add(new Infor(tempT, 1));
+            } else {
+                q.add(new Infor(tempT, 3));
+            }
+        }
+ 
+        bfs(1, 1);
+ 
+        System.out.println(time);
+    }
+ 
+    static void bfs(int x, int y) {
+ 
+        Deque<Dummy> dummy = new ArrayDeque();
+        arr[x][y] = 2;
+        dummy.add(new Dummy(x, y));
+        int dir = 1;
+ 
+        while (true) {
+            if (q.isEmpty()) {
+                while (true) {
+                    Dummy next = dummy.peekLast();
+                    int nextX = next.x + dx[dir];
+                    int nextY = next.y + dy[dir];
+ 
+                    if (nextX <= 0 || nextX > N || nextY <= 0 || nextY > N) {
+                        time++;
+                        return;
+                    } else if (arr[nextX][nextY] == 1) {
+                        dummy.add(new Dummy(nextX, nextY));
+                        arr[nextX][nextY] = 2;
+ 
+                    } else if (arr[nextX][nextY] == 0) {
+                        dummy.add(new Dummy(nextX, nextY));
+                        arr[nextX][nextY] = 2;
+                        Dummy temp = dummy.poll();
+                        arr[temp.x][temp.y] = 0;
+ 
+                    } else if (arr[nextX][nextY] == 2) {
+                        time++;
+                        return;
+                    }
+                    time++;
+                }
+            }
+ 
+            else {
+                Infor now = q.poll();
+                while (time < now.time) {
+                    Dummy next = dummy.peekLast();
+                    int nextX = next.x + dx[dir];
+                    int nextY = next.y + dy[dir];
+ 
+                    if (nextX <= 0 || nextX > N || nextY <= 0 || nextY > N) {
+                        time++;
+                        return;
+                    } else if (arr[nextX][nextY] == 1) {
+                        dummy.add(new Dummy(nextX, nextY));
+                        arr[nextX][nextY] = 2;
+ 
+                    } else if (arr[nextX][nextY] == 0) {
+                        dummy.add(new Dummy(nextX, nextY));
+                        arr[nextX][nextY] = 2;
+                        Dummy temp = dummy.poll();
+                        arr[temp.x][temp.y] = 0;
+ 
+                    } else if (arr[nextX][nextY] == 2) {
+                        time++;
+                        return;
+                    }
+                    time++;
+ 
+                }
+                dir = (dir + now.dir) % 4;
+            }
+        }
+ 
+    }
+ 
+}
