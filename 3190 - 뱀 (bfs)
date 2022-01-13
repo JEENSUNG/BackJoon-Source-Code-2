@@ -1,140 +1,123 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
+package com.board.dream;
+
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
- 
-class Dummy {
+
+public class Main{
+    static int n,m,t;
+    static int[][] arr;
+    static boolean [][] visit;
+    static int dx[] = {1,0,0,-1};
+    static int dy[] = {0,1,-1,0};
+    static HashMap<Integer, Character> map;
+    static int length = 0;
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        arr = new int[n+1][n+1];
+        visit = new boolean[n+1][n+1];
+        while (m-- > 0) {
+            int x = scan.nextInt();
+            int y = scan.nextInt();
+            arr[x][y] = 1;
+        }
+        t = scan.nextInt();
+        map = new HashMap<>();
+        while (t-- > 0) {
+            int x = scan.nextInt();
+            char str = scan.next().charAt(0);
+            map.put(x,str);
+        }
+        bfs(1,1);
+        System.out.println(length+1);
+    }
+    public static void bfs(int x, int y) {
+        Queue<Node> queue = new LinkedList<>();
+        Queue<Node> snake = new LinkedList<>();
+
+        queue.offer(new Node(x, y, 0));
+        snake.offer(new Node(x, y));
+        int dir = 1;
+        int snailX = x;
+        int snailY = y;
+        while (!queue.isEmpty()) {
+            Node now = queue.poll();
+            int nx = now.x;
+            int ny = now.y;
+            int ntime = now.time;
+            if (map.containsKey(ntime)) {
+                char key = map.get(ntime);
+                if (key == 'D') {
+                    dir = setRight(dir);
+                } else
+                    dir = setLeft(dir);
+                map.remove(ntime);
+            }
+            int qx = nx + dx[dir];
+            int qy = ny + dy[dir];
+            if (nx < 1 || ny < 1 || nx > n || ny > n) {
+                length = ntime;
+                break;
+            }
+            if (visit[qx][qy]) {
+                length = ntime;
+                break;
+            }
+            if (arr[nx][ny] == 0) {
+                visit[snailX][snailY] = false;
+                snake.poll();
+                snake.offer(new Node(qx, qy));
+                snailX = snake.peek().x;
+                snailY = snake.peek().y;
+            } else {
+                arr[qx][qy] = 0;
+                snake.offer(new Node(qx, qy));
+            }
+            visit[qx][qy] = true;
+            queue.offer(new Node(qx, qy, ntime + 1));
+        }
+    }
+    public static int setLeft ( int dir){
+        switch (dir) {
+            case 0:
+                return 3;
+            case 1:
+                return 0;
+            case 2:
+                return 1;
+            case 3:
+                return 2;
+        }
+        return 0;
+    }
+    public static int setRight(int dir){
+        switch(dir){
+            case 0:
+                return 1;
+            case 1:
+                return 2;
+            case 2:
+                return 3;
+            case 3:
+                return 0;
+        }
+        return 0;
+    }
+}
+class Node{
     int x;
     int y;
- 
-    Dummy(int x, int y) {
+    int time;
+    Node(int x, int y){
         this.x = x;
         this.y = y;
- 
     }
-}
- 
-class Infor {
-    int time;
-    int dir;
- 
-    Infor(int time, int dir) {
+    Node(int x, int y, int time) {
+        this.x = x;
+        this.y = y;
         this.time = time;
-        this.dir = dir;
     }
-}
- 
-class Main {
- 
-    static int N;
-    static int K;
-    static int L;
-    static int arr[][];
-    static int time;
-    static Queue<Infor> q;
-    static int[] dx = { -1, 0, 1, 0 }; 
-    static int[] dy = { 0, 1, 0, -1 };
- 
-    public static void main(String[] args) throws Exception {
- 
-        Scanner sc = new Scanner(System.in);
-        q = new LinkedList<>();
- 
-        N = sc.nextInt();
-        arr = new int[N + 1][N + 1];
- 
-        K = sc.nextInt();
-        for (int i = 0; i < K; i++) {
-            int tempX = sc.nextInt();
-            int tempY = sc.nextInt();
- 
-            arr[tempX][tempY] = 1;
-        }
- 
-        L = sc.nextInt();
- 
-        for (int i = 0; i < L; i++) {
-            int tempT = sc.nextInt();
-            int tempD = sc.next().charAt(0);
-            if (tempD == 'D') {
-                q.add(new Infor(tempT, 1));
-            } else {
-                q.add(new Infor(tempT, 3));
-            }
-        }
- 
-        bfs(1, 1);
- 
-        System.out.println(time);
-    }
- 
-    static void bfs(int x, int y) {
- 
-        Deque<Dummy> dummy = new ArrayDeque();
-        arr[x][y] = 2;
-        dummy.add(new Dummy(x, y));
-        int dir = 1;
- 
-        while (true) {
-            if (q.isEmpty()) {
-                while (true) {
-                    Dummy next = dummy.peekLast();
-                    int nextX = next.x + dx[dir];
-                    int nextY = next.y + dy[dir];
- 
-                    if (nextX <= 0 || nextX > N || nextY <= 0 || nextY > N) {
-                        time++;
-                        return;
-                    } else if (arr[nextX][nextY] == 1) {
-                        dummy.add(new Dummy(nextX, nextY));
-                        arr[nextX][nextY] = 2;
- 
-                    } else if (arr[nextX][nextY] == 0) {
-                        dummy.add(new Dummy(nextX, nextY));
-                        arr[nextX][nextY] = 2;
-                        Dummy temp = dummy.poll();
-                        arr[temp.x][temp.y] = 0;
- 
-                    } else if (arr[nextX][nextY] == 2) {
-                        time++;
-                        return;
-                    }
-                    time++;
-                }
-            }
- 
-            else {
-                Infor now = q.poll();
-                while (time < now.time) {
-                    Dummy next = dummy.peekLast();
-                    int nextX = next.x + dx[dir];
-                    int nextY = next.y + dy[dir];
- 
-                    if (nextX <= 0 || nextX > N || nextY <= 0 || nextY > N) {
-                        time++;
-                        return;
-                    } else if (arr[nextX][nextY] == 1) {
-                        dummy.add(new Dummy(nextX, nextY));
-                        arr[nextX][nextY] = 2;
- 
-                    } else if (arr[nextX][nextY] == 0) {
-                        dummy.add(new Dummy(nextX, nextY));
-                        arr[nextX][nextY] = 2;
-                        Dummy temp = dummy.poll();
-                        arr[temp.x][temp.y] = 0;
- 
-                    } else if (arr[nextX][nextY] == 2) {
-                        time++;
-                        return;
-                    }
-                    time++;
- 
-                }
-                dir = (dir + now.dir) % 4;
-            }
-        }
- 
-    }
- 
 }
