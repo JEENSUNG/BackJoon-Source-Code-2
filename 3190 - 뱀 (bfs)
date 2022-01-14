@@ -9,8 +9,8 @@ public class Main{
     static int n,m,t;
     static int[][] arr;
     static boolean [][] visit;
-    static int dx[] = {1,0,0,-1};
-    static int dy[] = {0,1,-1,0};
+    static int dx[] = {-1,0,1,0};
+    static int dy[] = {0,1,0,-1};
     static HashMap<Integer, Character> map;
     static int length = 0;
     public static void main(String[] args){
@@ -58,7 +58,7 @@ public class Main{
             }
             int qx = nx + dx[dir];
             int qy = ny + dy[dir];
-            if (nx < 1 || ny < 1 || nx > n || ny > n) {
+            if (qx < 1 || qy < 1 || qx > n || qy > n) {
                 length = ntime;
                 break;
             }
@@ -66,7 +66,7 @@ public class Main{
                 length = ntime;
                 break;
             }
-            if (arr[nx][ny] == 0) {
+            if (arr[qx][qy] == 0) {
                 visit[snailX][snailY] = false;
                 snake.poll();
                 snake.offer(new Node(qx, qy));
