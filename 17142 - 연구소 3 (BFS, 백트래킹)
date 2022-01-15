@@ -1,0 +1,96 @@
+import java.awt.*;
+import java.util.*;
+
+public class Main {
+    static int n, m, t;
+    static int[][] arr;
+    static int[][] ans;
+    static int[] dx = {1, 0, 0, -1};
+    static int[] dy = {0, 1, -1, 0};
+    static boolean[] visit;
+    static int time = 0;
+    static int result = Integer.MAX_VALUE;
+    static int Tzero = 0;
+    static boolean[] v;
+    static Queue<Virus> queue = new LinkedList<>();
+    static ArrayList<Virus> virus = new ArrayList<>();
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        arr = new int[n][n];
+        visit = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                arr[i][j] = scan.nextInt();
+                if(arr[i][j] == 2)
+                    virus.add(new Virus(i,j));
+                if(arr[i][j] == 0)
+                    Tzero++;
+            }
+        }
+        visit = new boolean[virus.size()];
+        combination(0,0);
+        System.out.println(result == Integer.MAX_VALUE ? -1 : result);
+    }
+    public static void combination(int start, int cnt){
+        if(cnt == m){
+            result = Math.min(result,bfs());
+        }
+        for(int i = start; i < virus.size(); i++){
+            if (!visit[i]) {
+                visit[i] =  true;
+                combination(i + 1, cnt + 1);
+                visit[i] = false;
+            }
+        }
+    }
+    public static int bfs(){
+        queue = new LinkedList<>();
+        boolean[][] v = new boolean[n][n];
+        for(int i = 0; i < virus.size(); i++){
+            if (visit[i]) {
+                queue.add(new Virus(virus.get(i).x, virus.get(i).y, 0));
+            }
+        }
+        int time = 0;
+        int zero = 0;
+        while (!queue.isEmpty()) {
+            Virus now = queue.poll();
+            for(int i = 0; i < 4; i++){
+                int nx = now.x + dx[i];
+                int ny = now.y + dy[i];
+                if(nx < 0 || ny < 0 || nx >= n || ny >= n){
+                    continue;
+                }
+                if(arr[nx][ny] == 1 || v[nx][ny])
+                    continue;
+                if (arr[nx][ny] != 1 && !v[nx][ny]) {
+                    if (arr[nx][ny] == 0) {
+                        zero++;
+                        time = now.time + 1;
+                    }
+                    v[nx][ny] = true;
+                    queue.offer(new Virus(nx,ny,now.time+1));
+                }
+            }
+        }
+        if(zero == Tzero)
+            return time;
+        return Integer.MAX_VALUE;
+    }
+}
+class Virus{
+    int x;
+    int y;
+    int time;
+    Virus(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+    Virus(int x, int y, int time){
+        this.x = x;
+        this.y = y;
+        this.time = time;
+    }
+}
